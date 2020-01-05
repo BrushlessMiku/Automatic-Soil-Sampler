@@ -8,8 +8,6 @@ int drillMotorRampInterval = drillMotorRampPeriod/numberOfDrillMotorThrottleStep
 
 int drillMotorThrottleStep =  (int) drillMotorEndSpeed/numberOfDrillMotorThrottleSteps;
 
-
-
 unsigned long previousDrillRampMillis = 0; //timer for drill throttle ramping
 
 unsigned long previousCarrierPlateMillis = 0;
@@ -119,6 +117,7 @@ void bumpCarrierPlateUp(int bumpTime){
         }else {
 
             analogWrite(linearActuatorMotorSignal, 0);
+            delay(1000); //lazy delay after the parking procedure is finished
             carrierPlateParkingProcedureComplete = true; 
         }
 
