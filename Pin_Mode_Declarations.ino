@@ -4,6 +4,8 @@ void setUpPins(){
 
     pinMode(endStopTopIndicatorPin, OUTPUT);
     pinMode(endStopBotIndicatorPin, OUTPUT);
+    pinMode(endStopBot, INPUT);
+    pinMode(endStopTop, INPUT);
     pinMode(drillMotorPin, OUTPUT);
     pinMode(linearActuatorMotorSignal, OUTPUT);
     attachInterrupt(digitalPinToInterrupt(cycleStartButtonPin), cycleStart_ISR, CHANGE);

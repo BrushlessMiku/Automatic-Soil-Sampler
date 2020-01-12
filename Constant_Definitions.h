@@ -4,7 +4,7 @@
 
 #define drillMotorPin 10
 
-#define linearActuatorMotorSignal 11
+#define linearActuatorMotorSignal 9
 
 #define cycleStartButtonPin 2
 

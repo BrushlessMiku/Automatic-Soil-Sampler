@@ -9,13 +9,15 @@ byte cycleStartButtonState = 0;
 
 byte endstopBotSwitchState = 0;
 
+byte endstopTopSwitchState = 0;
+
 bool drilling_In_Progress = false;
 
 void setup() {
   // put your setup code here, to run once:
 
     setUpPins();
-
+    pwmSetup();
 }
 
 void loop() {
@@ -25,7 +27,7 @@ void loop() {
   //analogWrite(drillMotorSignal, 5);
   //analogWrite(linearActuatorMotorSignal, 90);
   
-
+  //Serial.print("butt");
 }
 
 void cycleStart_ISR() {
@@ -44,10 +46,10 @@ void cycleStart_ISR() {
 void bottomEndStopTriggered_ISR(){
   //bottom endstop has been triggered, immediately tell linear actuator to stop, wait a short while, and then cycle carrier plate up. 
   endstopBotSwitchState = 1;
-
 }
 
 void topEndStopTriggered_ISR(){
 
+  endstopTopSwitchState = 1;
 
 }
