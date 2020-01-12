@@ -1,6 +1,6 @@
 #include "Constant_Definitions.h"
 
-int drillMotorTargetSpeed = 0xFFFF;
+int drillMotorTargetSpeed = 0x1FFF;
 int drillMotorSpeed = 0;
 unsigned long drillMotorRampPeriod = 500; //time for drill to throttle up in millis 
 int numberOfDrillMotorThrottleSteps = 50; //number of drill motor throttle steps to take, needs to be a factor of drillMotorRampPeriod.
@@ -46,7 +46,6 @@ void drillSequence(){
          downStrokeHaltMotorProcedureComplete == true){
         
             bumpCarrierPlateUp(timeToBumpCarrierPlateUp);
-            delay(1000);
     }
     
     if(cycleStartButtonState == 1 && endstopBotSwitchState == 1 && endstopTopSwitchState == 0 && 
@@ -68,7 +67,6 @@ void drillSequence(){
     if(cycleStartButtonState == 1 && endstopTopSwitchState == 1 && upStrokeHaltMotorProcedureComplete == true){
 
         bumpCarrierPlateDown(timeToBumpCarrierPlateDown);
-        delay(1000);
 
     }
 
@@ -117,6 +115,8 @@ void rampDrillMotorDown_DownStroke(){
 
             writePWM(drillMotorPin, 0);
             downStrokeHaltMotorProcedureComplete = true; 
+
+            //delay(1000);
         }
     }
 
@@ -169,6 +169,8 @@ void bumpCarrierPlateUp(int timeToBumpCarrierPlateUp){
             writePWM(linearActuatorMotorSignal, 0);
            
             carrierPlateParkingProcedureComplete = true; 
+
+            delay(1000);
         }
 
 
@@ -195,6 +197,8 @@ void bumpCarrierPlateDown(int bumpTime){
             writePWM(linearActuatorMotorSignal, 0);
 
             carrierPlateParkingProcedureComplete = true; 
+
+            delay(1000);
         }
 
 
