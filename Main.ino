@@ -17,7 +17,9 @@ void setup() {
   // put your setup code here, to run once:
 
     setUpPins();
-    pwmSetup();
+    pwmSetup_16bit();
+
+
 }
 
 void loop() {

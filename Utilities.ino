@@ -1,6 +1,6 @@
 
 
-void pwmSetup(){
+void pwmSetup_16bit(){
 
     TCCR1A = 0;
     TCCR1B = 0;
@@ -12,7 +12,7 @@ void pwmSetup(){
     ICR1 = 0xFFFF;
 }
 
-void writePWM(int pin, int pwmValue){
+void writePWM16Bit(int pin, unsigned int pwmValue){
 
     if(pin == 9){
 

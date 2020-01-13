@@ -1,12 +1,12 @@
 #include "Constant_Definitions.h"
 
-int drillMotorTargetSpeed = 0x1FFF;
-int drillMotorSpeed = 0;
-unsigned long drillMotorRampPeriod = 500; //time for drill to throttle up in millis 
-int numberOfDrillMotorThrottleSteps = 50; //number of drill motor throttle steps to take, needs to be a factor of drillMotorRampPeriod.
+unsigned int drillMotorTargetSpeed = 65535;
+unsigned int drillMotorSpeed = 0;
+unsigned long drillMotorRampPeriod = 1000; //time for drill to throttle up in millis 
+int numberOfDrillMotorThrottleSteps = 100; //number of drill motor throttle steps to take, needs to be a factor of drillMotorRampPeriod.
 int drillMotorRampInterval = drillMotorRampPeriod/numberOfDrillMotorThrottleSteps;
 
-int drillMotorThrottleStep =  (int) drillMotorTargetSpeed/numberOfDrillMotorThrottleSteps;
+unsigned int drillMotorThrottleStep = (unsigned int) drillMotorTargetSpeed/numberOfDrillMotorThrottleSteps;
 
 unsigned long previousDrillRampMillis = 0; //timer for drill throttle ramping
 
@@ -73,7 +73,7 @@ void drillSequence(){
    
 }
 
-void rampDrillMotorUp(int topDrillSpeed){
+void rampDrillMotorUp(unsigned int topDrillSpeed){
     //provide a smooth ramp up input to the drill motor 
     //should be non-blocking 
 
@@ -81,15 +81,14 @@ void rampDrillMotorUp(int topDrillSpeed){
         
         previousDrillRampMillis = currentMillis;
 
-        if(drillMotorSpeed < topDrillSpeed){
+        if(drillMotorSpeed < topDrillSpeed- drillMotorThrottleStep){
 
             drillMotorSpeed += drillMotorThrottleStep;
-
-            writePWM(drillMotorPin, drillMotorSpeed);
+            writePWM16Bit(drillMotorPin, drillMotorSpeed);
 
         }else {
-
-            writePWM(drillMotorPin, topDrillSpeed);
+            
+            writePWM16Bit(drillMotorPin, topDrillSpeed);
         }
     }
 
@@ -103,17 +102,17 @@ void rampDrillMotorDown_DownStroke(){
         
         previousDrillRampMillis = currentMillis;
 
-        if(drillMotorSpeed > 0){
+        if(drillMotorSpeed > drillMotorThrottleStep){
 
             downStrokeHaltMotorProcedureComplete = false;
 
             drillMotorSpeed -= drillMotorThrottleStep;
 
-            writePWM(drillMotorPin, drillMotorSpeed);
+            writePWM16Bit(drillMotorPin, drillMotorSpeed);
 
         }else {
 
-            writePWM(drillMotorPin, 0);
+            writePWM16Bit(drillMotorPin, 0);
             downStrokeHaltMotorProcedureComplete = true; 
 
             //delay(1000);
@@ -136,11 +135,11 @@ void rampDrillMotorDown_UpStroke(){
 
             drillMotorSpeed -= drillMotorThrottleStep;
 
-            writePWM(drillMotorPin, drillMotorSpeed);
+            writePWM16Bit(drillMotorPin, drillMotorSpeed);
 
         }else {
 
-            writePWM(drillMotorPin, 0);
+            writePWM16Bit(drillMotorPin, 0);
             upStrokeHaltMotorProcedureComplete = true;
             carrierPlateBumpProcedureComplete = false;
  
@@ -161,12 +160,12 @@ void bumpCarrierPlateUp(int timeToBumpCarrierPlateUp){
 
         if(carrierPlateBumpProcedureComplete == false){
 
-            writePWM(linearActuatorMotorSignal, 1500);
+            writePWM16Bit(linearActuatorMotorSignal, 1500);
             carrierPlateBumpProcedureComplete = true; 
 
         }else {
 
-            writePWM(linearActuatorMotorSignal, 0);
+            writePWM16Bit(linearActuatorMotorSignal, 0);
            
             carrierPlateParkingProcedureComplete = true; 
 
@@ -178,23 +177,23 @@ void bumpCarrierPlateUp(int timeToBumpCarrierPlateUp){
 
 }
 
-void bumpCarrierPlateDown(int bumpTime){
+void bumpCarrierPlateDown(int timeToBumpCarrierPlateDown){
 
     //function used to "park" the carrier plate slightly below the top endstop switch 
     //open loop 
 
-    if(currentMillis - previousCarrierPlateMillis >= bumpTime){
+    if(currentMillis - previousCarrierPlateMillis >= timeToBumpCarrierPlateDown){
 
         previousCarrierPlateMillis  = currentMillis;
 
 
         if(carrierPlateBumpProcedureComplete == false){
 
-            writePWM(linearActuatorMotorSignal, 1500);
+            writePWM16Bit(linearActuatorMotorSignal, 1500);
             carrierPlateBumpProcedureComplete = true; 
         }else {
 
-            writePWM(linearActuatorMotorSignal, 0);
+            writePWM16Bit(linearActuatorMotorSignal, 0);
 
             carrierPlateParkingProcedureComplete = true; 
 
@@ -208,28 +207,28 @@ void bumpCarrierPlateDown(int bumpTime){
 
 void cycleLinearActuatorDown(){
 
-    writePWM(linearActuatorMotorSignal, 1500);
+    writePWM16Bit(linearActuatorMotorSignal, 1500);
     drilling_In_Progress  = true; 
 
 }
 
 void cycleLinearActuatorUp(){
     
-    writePWM(linearActuatorMotorSignal, 1500);
+    writePWM16Bit(linearActuatorMotorSignal, 1500);
     carrierPlateBumpProcedureComplete = false; 
 
 }
 
 void stopLinearActuator(){
 
-    writePWM(linearActuatorMotorSignal, 0);
+    writePWM16Bit(linearActuatorMotorSignal, 0);
     
 }
 
 void stopDrillMotor(){
 
     
-    writePWM(drillMotorPin, 0);
+    writePWM16Bit(drillMotorPin, 0);
 
 
 }
