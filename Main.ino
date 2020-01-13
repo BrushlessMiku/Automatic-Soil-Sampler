@@ -26,10 +26,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   currentMillis = millis();
   drillSequence();
-  //analogWrite(drillMotorSignal, 5);
-  //analogWrite(linearActuatorMotorSignal, 90);
-  
-  //Serial.print("butt");
+
 }
 
 void cycleStart_ISR() {
