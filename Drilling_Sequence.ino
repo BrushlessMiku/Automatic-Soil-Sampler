@@ -12,14 +12,24 @@ unsigned long previousDrillRampMillis = 0; //timer for drill throttle ramping
 
 unsigned long previousCarrierPlateMillis = 0;
 
+unsigned long stepperMillis = 0;
+
+unsigned long stepperInterval = 40;
+
+int stepperIndexCount = 0; 
+
 int timeToBumpCarrierPlateUp = 1000; // length of time in millis to bump up carrier plate 
 
 int timeToBumpCarrierPlateDown = 1000;
+
+int stepperState = LOW;
+
 
 bool downStrokeHaltMotorProcedureComplete = false; 
 bool upStrokeHaltMotorProcedureComplete = false;
 bool carrierPlateBumpProcedureComplete = false;
 bool carrierPlateParkingProcedureComplete = false;
+bool drillingProcedureComplete = false;
 
 
 void drillSequence(){
@@ -64,12 +74,15 @@ void drillSequence(){
 
     }
 
-    if(cycleStartButtonState == 1 && endstopTopSwitchState == 1 && upStrokeHaltMotorProcedureComplete == true){
+    if(cycleStartButtonState == 1 && endstopTopSwitchState == 1 && upStrokeHaltMotorProcedureComplete == true && drillingProcedureComplete == false){
 
         bumpCarrierPlateDown(timeToBumpCarrierPlateDown);
 
     }
 
+    if( drillingProcedureComplete == true){
+        indexCarousel();
+    }
    
 }
 
@@ -195,15 +208,45 @@ void bumpCarrierPlateDown(int timeToBumpCarrierPlateDown){
 
             writePWM16Bit(linearActuatorMotorSignal, 0);
 
-            carrierPlateParkingProcedureComplete = true; 
 
             delay(1000);
+            
+            carrierPlateParkingProcedureComplete = true; 
+
+            drillingProcedureComplete = true;
         }
 
 
     }
 
 }
+
+void indexCarousel(){
+
+
+    if(stepperIndexCount <= 75) {
+
+        if(currentMillis - stepperMillis >= stepperInterval){
+            stepperMillis = currentMillis;
+
+            if (stepperState == LOW){
+
+                stepperState = HIGH;
+                
+            }else{
+
+                stepperState = LOW;
+                
+            } 
+
+            stepperIndexCount = stepperIndexCount + 1;
+            digitalWrite(stepperMotorStepPin, stepperState);
+        }
+    }
+}
+
+
+
 
 void cycleLinearActuatorDown(){
 

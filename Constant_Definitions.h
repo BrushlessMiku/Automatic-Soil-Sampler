@@ -1,4 +1,4 @@
-#define endStopTopIndicatorPin 7
+#define stepperMotorStepPin 7
 
 #define endStopBotIndicatorPin 8
 

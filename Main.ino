@@ -4,7 +4,6 @@
 
 unsigned long currentMillis = 0;
 
-
 byte cycleStartButtonState = 0;
 
 byte endstopBotSwitchState = 0;

@@ -2,7 +2,7 @@
 void setUpPins(){
     //declare output pins and attach all interrupts
 
-    pinMode(endStopTopIndicatorPin, OUTPUT);
+    pinMode(stepperMotorStepPin, OUTPUT);
     pinMode(endStopBotIndicatorPin, OUTPUT);
     pinMode(endStopBot, INPUT);
     pinMode(endStopTop, INPUT);
