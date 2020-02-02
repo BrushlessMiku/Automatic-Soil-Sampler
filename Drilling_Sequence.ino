@@ -83,6 +83,13 @@ void drillSequence(){
     if( drillingProcedureComplete == true){
         indexCarousel();
     }
+
+
+    if(slewStepperCommand == true){
+
+        slewStepper();
+
+    }
    
 }
 
@@ -274,4 +281,28 @@ void stopDrillMotor(){
     writePWM16Bit(drillMotorPin, 0);
 
 
+}
+
+void slewStepper(){
+
+    if(digitalRead(stepperCalibratePin) == HIGH){
+
+        if(currentMillis - stepperMillis >= stepperInterval){
+            stepperMillis = currentMillis;
+
+                if (stepperState == LOW){
+
+                    stepperState = HIGH;
+                
+                }else{
+
+                    stepperState = LOW;
+                
+                } 
+
+            digitalWrite(stepperMotorStepPin, stepperState);
+
+         }
+    
+    }
 }

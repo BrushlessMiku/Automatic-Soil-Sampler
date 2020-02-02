@@ -11,3 +11,5 @@
 #define endStopBot 4
 
 #define endStopTop 5
+
+#define stepperCalibratePin 6 

@@ -11,4 +11,5 @@ void setUpPins(){
     attachInterrupt(digitalPinToInterrupt(cycleStartButtonPin), cycleStart_ISR, CHANGE);
     attachPCINT(digitalPinToPCINT(endStopBot), bottomEndStopTriggered_ISR, CHANGE);
     attachPCINT(digitalPinToPCINT(endStopTop), topEndStopTriggered_ISR, CHANGE);
+    attachPCINT(digitalPinToPCINT(stepperCalibratePin), slewStepper_ISR, RISING);
 }

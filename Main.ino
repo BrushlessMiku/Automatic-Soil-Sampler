@@ -10,6 +10,8 @@ byte endstopBotSwitchState = 0;
 
 byte endstopTopSwitchState = 0;
 
+bool slewStepperCommand = false; 
+
 bool drilling_In_Progress = false;
 
 void setup() {
@@ -49,5 +51,11 @@ void bottomEndStopTriggered_ISR(){
 void topEndStopTriggered_ISR(){
 
   endstopTopSwitchState = 1;
+
+}
+
+void slewStepper_ISR(){
+
+  slewStepperCommand = true; 
 
 }
